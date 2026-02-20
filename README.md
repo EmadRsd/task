@@ -14,18 +14,22 @@ Helm, consisting of:
 
 ## Project Structure
 
+    ingress-controller-patch.yaml
+    ingress-controller.yaml
     myapp-chart/
     ├── templates/
-    │   ├── namespace.yaml           # Namespace for all resources
-    │   ├── mysql-secret.yaml        # MySQL credentials
-    │   ├── mysql-pv.yaml            # Persistent volume claim for MySQL
-    │   ├── mysql-statefulset.yaml   # MySQL statefulset
-    │   ├── nginx-deployment.yaml    # Nginx deployment
-    │   ├── nginx-service.yaml       # Nginx service
-    │   ├── nginx-hpa.yaml           # Horizontal pod autoscaler for Nginx
-    │   ├── ingress.yaml             # Ingress rules
-    │   └── metrics-server.yaml      # Metrics server for HPA
-    └── Chart.yaml                   # Helm chart metadata
+    │   ├── namespace.yaml             # Namespace for all resources
+    │   ├── mysql-secret.yaml          # MySQL credentials
+    │   ├── mysql-pv.yaml              # Persistent volume for MySQL
+    │   ├── mysql-pvc.yaml             # Persistent volume claim for MySQL
+    │   ├── nfs-server-deployment.yaml # NFS server deployment for MySQL
+    │   ├── mysql-statefulset.yaml     # MySQL statefulset
+    │   ├── nginx-deployment.yaml      # Nginx deployment
+    │   ├── nginx-service.yaml         # Nginx service
+    │   ├── nginx-hpa.yaml             # Horizontal pod autoscaler for Nginx
+    │   ├── ingress.yaml               # Ingress rules
+    │   └── metrics-server.yaml        # Metrics server for HPA
+    └── Chart.yaml                     # Helm chart metadata
 
 ------------------------------------------------------------------------
 
@@ -44,7 +48,7 @@ Helm, consisting of:
 Start Minikube with the specified image repository:
 
 ``` bash
-minikube start   --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
+minikube start --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
 ### 2. Deploy Ingress Controller
@@ -91,9 +95,9 @@ echo "$(minikube ip) nginx.local" | sudo tee -a /etc/hosts
 
 ### Nginx Deployment
 
--   Serves content on port 80
+-   Serves content on port 80 and 443
 -   Configured with Horizontal Pod Autoscaler
--   Scales between 3--10 replicas based on CPU usage
+-   Scales between 2--10 replicas based on CPU usage
 
 ### Metrics Server
 
@@ -112,11 +116,16 @@ echo "$(minikube ip) nginx.local" | sudo tee -a /etc/hosts
 ## Verification Commands
 
 ``` bash
+kubectl get pods -n kube-system
+kubectl get pods -n ingress-nginx
 kubectl get pods -n mytask
 kubectl get svc -n mytask
 kubectl get ingress -n mytask
 kubectl get hpa -n mytask
 kubectl get pvc -n mytask
+kubectl get pv -n mytask
+kubectl top pods -n mytask
+kubectl get events -n mytask --watch
 ```
 
 ------------------------------------------------------------------------
