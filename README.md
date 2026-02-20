@@ -51,23 +51,24 @@ Start Minikube with the specified image repository:
 minikube start --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
 ```
 
-### 2. Deploy Ingress Controller
+### 2. Deploy the Application with Helm
+
+``` bash
+helm install myapp-release ./myapp-chart --namespace mytask --create-namespace
+```
+
+### 3. Deploy Ingress Controller
 
 ``` bash
 kubectl apply -f ingress-controller.yaml
 ```
 
-### 3. Patch Ingress Controller
+### 4. Patch Ingress Controller
 
 ``` bash
 kubectl patch deployment -n ingress-nginx ingress-nginx-controller --patch-file ingress-controller-patch.yaml
 ```
 
-### 4. Deploy the Application with Helm
-
-``` bash
-helm install myapp-release ./myapp-chart --namespace mytask --create-namespace
-```
 
 ------------------------------------------------------------------------
 
