@@ -9,6 +9,11 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
+    - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  hostPath:
-    path: /data/mysql
+  nfs:
+    server: nfs-server.mytask.svc.cluster.local
+    path: /nfs
+  mountOptions:
+    - hard
+    - nfsvers=4.1
