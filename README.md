@@ -62,7 +62,7 @@ kubectl patch deployment -n ingress-nginx ingress-nginx-controller --patch-file 
 ### 4. Deploy the Application with Helm
 
 ``` bash
-helm install myapp-release ./myapp-chart
+helm install myapp-release ./myapp-chart --namespace mytask --create-namespace
 ```
 
 ------------------------------------------------------------------------
@@ -134,7 +134,7 @@ kubectl get ingressclass
 ## Clean Up
 
 ``` bash
-helm uninstall myapp-release
+helm uninstall myapp-release --namespace mytask
 kubectl delete -f ingress-controller.yaml
 minikube stop
 ```
